@@ -3,7 +3,7 @@ const sql = require('mssql');
 const config = {
   user: 'sa', // Tài khoản SQL Server
   password: '123456', // Mật khẩu
-  server: 'localhost\\SQLEXPRESS', // Phiên bản SQL Server
+  server: 'NDDAN', // Phiên bản SQL Server
   port: 1433, // Cập nhật cổng chính xác
 
   database: 'db_dhhb', // Tên database

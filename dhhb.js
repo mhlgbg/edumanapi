@@ -9,6 +9,8 @@ const exportRoutes = require('./routes/exportRoutes'); // Import route
 const semesterRoutes = require('./routes/semesterRoutes'); // Import route
 const trainingPlanRoutes = require('./routes/trainingPlanRoutes'); // Import route
 
+const classroomRoutes = require('./routes/classroomRoutes'); // Import route
+const scheduleRoutes = require('./routes/scheduleRoutes'); // Import route
 
 require('dotenv').config();
 
@@ -29,6 +31,8 @@ app.use('/api/exports', exportRoutes);
 
 app.use('/api/semesters', semesterRoutes);
 app.use('/api/training-plans', trainingPlanRoutes);
+app.use('/api/classrooms', classroomRoutes);
+app.use('/api/schedules', scheduleRoutes);
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {

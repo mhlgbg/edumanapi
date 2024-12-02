@@ -9,6 +9,11 @@ router.post('/', trainingPlanController.addTrainingPlan);
 // Thêm lớp vào môn học
 router.post('/add-class', trainingPlanController.addClassToSubject);
 
+router.post('/import', trainingPlanController.importTrainingPlans);
+
+
+router.post('/generate-classes', trainingPlanController.generateClassesForTrainingPlan);
+
 // Xóa kế hoạch đào tạo (lớp)
 router.delete('/:id', trainingPlanController.deleteTrainingPlan);
 
