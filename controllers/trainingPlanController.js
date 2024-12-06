@@ -86,8 +86,8 @@ exports.addTrainingPlan = async (req, res) => {
 
 // Thêm lớp vào môn học
 exports.addClassToSubject = async (req, res) => {
-    const { MaHocPhan, MaLop, MaNhom } = req.body;
-
+    const { HocKiId, MaHocPhan, MaLop, MaNhom } = req.body;
+    
     if (!MaHocPhan || !MaLop || !MaNhom) {
         return res.status(400).json({ message: 'Thiếu thông tin bắt buộc.' });
     }
@@ -95,14 +95,14 @@ exports.addClassToSubject = async (req, res) => {
     try {
         const pool = await poolPromise;
         await pool.request()
+            .input('HocKiId', sql.Int, HocKiId)
             .input('MaHocPhan', sql.NVarChar(50), MaHocPhan)
             .input('MaLop', sql.NVarChar(50), MaLop)
             .input('MaNhom', sql.NVarChar(50), MaNhom)
             .query(`
                 INSERT INTO tbk_KeHoachDaoTao (HocKiId, MaHocPhan, MaLop, MaNhom)
                 VALUES (
-                    (SELECT TOP 1 HocKiId FROM tbk_KeHoachDaoTao WHERE MaHocPhan = @MaHocPhan),
-                    @MaHocPhan, @MaLop, @MaNhom
+                    @HocKiId, @MaHocPhan, @MaLop, @MaNhom
                 )
             `);
         res.status(201).json({ message: 'Thêm lớp vào môn học thành công.' });
@@ -137,7 +137,7 @@ exports.deleteTrainingPlan = async (req, res) => {
 // Xóa môn học và các lớp liên quan
 exports.deleteSubject = async (req, res) => {
     const { MaHocPhan } = req.params;
-
+    const { HocKiId} = req.body;
     if (!MaHocPhan) {
         return res.status(400).json({ message: 'Mã học phần không được để trống.' });
     }
@@ -145,9 +145,10 @@ exports.deleteSubject = async (req, res) => {
     try {
         const pool = await poolPromise;
         await pool.request()
+            .input('HocKiId', sql.Int, HocKiId)
             .input('MaHocPhan', sql.NVarChar(50), MaHocPhan)
             .query(`
-                DELETE FROM tbk_KeHoachDaoTao WHERE MaHocPhan = @MaHocPhan
+                DELETE FROM tbk_KeHoachDaoTao WHERE MaHocPhan = @MaHocPhan and HocKiId = @HocKiId
             `);
         res.status(200).json({ message: 'Xóa môn học và các lớp liên quan thành công.' });
     } catch (error) {

@@ -232,22 +232,21 @@ exports.getSchedules = async (req, res) => {
 exports.getRelatedClasses = async (req, res) => {
     const { HocKiId, MaHocPhan, MaNhom } = req.query;
     try {
-      const pool = await poolPromise;
-      const result = await pool
-        .request()
-        .input('HocKiId', sql.Int, HocKiId)
-        .input('MaHocPhan', sql.NVarChar, MaHocPhan)
-        .input('MaNhom', sql.NVarChar, MaNhom)
-        .query(`
+        const pool = await poolPromise;
+        const result = await pool
+            .request()
+            .input('HocKiId', sql.Int, HocKiId)
+            .input('MaHocPhan', sql.NVarChar, MaHocPhan)
+            .input('MaNhom', sql.NVarChar, MaNhom)
+            .query(`
           SELECT DISTINCT kdt.MaLop
           FROM tbk_KeHoachDaoTao kdt          
           WHERE kdt.HocKiId = @HocKiId AND kdt.MaHocPhan = @MaHocPhan AND kdt.MaNhom = @MaNhom
         `);
-      console.log("getRelatedClasses ", result.recordset);
+        console.log("getRelatedClasses ", result.recordset);
 
-      res.json(result.recordset);
+        res.json(result.recordset);
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching related classes', error });
+        res.status(500).json({ message: 'Error fetching related classes', error });
     }
-  };
-  
+};
